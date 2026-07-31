@@ -306,17 +306,23 @@
     }
   }
 
-  // แก้ไขจุดนี้: สั่งให้เล่นเพลงทันทีเมื่อกดปุ่ม TAP TO BLOOM บน iPhone (ห้ามมีคำสั่งคั่นก่อนหน้า)
+  // ปรับแก้ตรงนี้ให้บังคับโหลดและเล่นเสียงซ้ำเพื่อปลดล็อก iPhone ชัวร์ๆ
   bloomBtn.addEventListener('click', () => {
     if (bloomBtn.disabled) return;
 
-    bgMusic.volume = 0.6;
-    bgMusic.play().then(() => {
-      soundBtn.textContent = '🔊';
-    }).catch((err) => {
-      console.log("Audio play blocked:", err);
-      soundBtn.textContent = '🔇';
-    });
+    // สั่งโหลดและเล่นทันที
+    bgMusic.load();
+    bgMusic.volume = 1.0;
+    
+    let playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        soundBtn.textContent = '🔊';
+      }).catch(error => {
+        console.log("Autoplay prevented:", error);
+        soundBtn.textContent = '🔇';
+      });
+    }
 
     loadingScreen.style.opacity = '0';
     setTimeout(() => { loadingScreen.style.display = 'none'; }, 600);
@@ -329,16 +335,15 @@
     }, 3400);
   });
 
+  // ปุ่มลำโพงมุมขวาบน เผื่อให้กดเปิด-ปิดเสียงได้เองแบบบังคับ
   soundBtn.addEventListener('click', () => {
     if (bgMusic.paused) {
-      bgMusic.play();
-      soundBtn.textContent = '🔊';
+      bgMusic.play().then(() => {
+        soundBtn.textContent = '🔊';
+      });
     } else {
       bgMusic.pause();
       soundBtn.textContent = '🔇';
     }
   });
 </script>
-
-</body>
-</html>
