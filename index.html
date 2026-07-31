@@ -72,8 +72,6 @@
   #garden-screen{ z-index:3; opacity:0; pointer-events:none; transition: opacity .8s ease; }
   #garden-screen.show{ opacity:1; pointer-events:auto; }
 
-  /* 🌹 EDIT HERE: overall size of the whole flower scene.
-     Make this bigger/smaller to scale EVERYTHING (stem, leaves, petals) together. */
   .rose-wrap{
     position:relative;
     width: 520px;
@@ -101,7 +99,6 @@
     animation-delay: .2s;
     box-shadow: 0 0 14px rgba(47,143,78,0.35);
   }
-  /* stem height -> how tall the flower stands */
   @keyframes grow-stem{ to{ height: 300px; } }
 
   .leaf{
@@ -199,20 +196,15 @@
 <div id="loading-screen" class="screen">
   <div class="card">
     <div class="bud-emoji">🌹</div>
-    <!-- 🌹 EDIT HERE #1: Title on the loading card
-         (คำแปล: "Love.css" เป็นชื่อเล่นๆ ของหน้านี้ ไม่แปลตรงตัวก็ได้ แต่ถ้าจะเปลี่ยนก็แก้ตรงนี้) -->
     <h1>Flowers for u</h1>
     <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
-    <!-- this text is driven by the "statuses" array in <script> below
-         (คำแปล: "Growing digital petals ..." = "กำลังปลูกกลีบดอกดิจิทัล ..." ข้อความนี้จะถูกแทนที่โดยลิสต์ statuses ด้านล่างอัตโนมัติ ไม่ต้องแก้ตรงนี้) -->
     <div class="status-text" id="statusText">Growing digital petals ...</div>
-    <!-- คำแปล: "TAP TO BLOOM" = "แตะเพื่อให้บาน" -->
     <button class="bloom-btn" id="bloomBtn" disabled>TAP TO BLOOM</button>
   </div>
 </div>
 
 <div id="garden-screen" class="screen">
-  <button class="sound-btn" id="soundBtn">🔇</button>
+  <button class="sound-btn" id="soundBtn">🔊</button>
   <div class="rose-wrap">
     <div class="glow"></div>
     <div class="stem"></div>
@@ -220,42 +212,17 @@
     <div class="leaf right"></div>
     <div class="flower-core" id="flowerCore"></div>
     <div class="message" id="message">
-      <!-- 🌹 EDIT HERE #2: The final message shown after the flower blooms
-           (คำแปล: "i coded this for you" = "ฉันเขียนโค้ดนี้ขึ้นมาเพื่อเธอ") -->
       <p>Non hai Saipaan 🤍</p>
       <span>🌹</span>
     </div>
   </div>
 </div>
 
-<!-- 🌹 EDIT HERE #3 (MUSIC):
-     Put your own mp3 file next to this html file (same folder) and change
-     the src="" below to its filename, e.g. src="my-song.mp3".
-
-     📱 หมายเหตุสำคัญสำหรับ iPhone (Safari) โดยเฉพาะ:
-     1) ถ้าโทรศัพท์เปิด "โหมดเงียบ" อยู่ (ปุ่มสวิตช์ข้างเครื่อง/Ring-Silent switch)
-        Safari จะปิดเสียงเว็บทุกเว็บโดยอัตโนมัติ แก้จากโค้ดไม่ได้ ต้องปลดสวิตช์เงียบ
-        ที่ตัวเครื่องก่อนถึงจะได้ยินเสียง
-     2) ควรเปิดหน้านี้ผ่านลิงก์เว็บจริง (http/https เช่น อัปโหลดขึ้น Netlify/GitHub Pages)
-        ไม่ใช่เปิดไฟล์ .html ตรงๆ จากแอป Files เพราะ Safari บางเวอร์ชันบล็อกการโหลด
-        ไฟล์เสียงจากไฟล์ในเครื่องด้วยเหตุผลด้านความปลอดภัย
-     3) ใช้ไฟล์นามสกุล .mp3 หรือ .m4a (AAC) จะเข้ากันได้กับ iOS แน่นอนที่สุด
-        หลีกเลี่ยง .ogg หรือ .webm เพราะ Safari ไม่รองรับ -->
 <audio id="bgMusic" loop preload="auto">
   <source src="love.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  // ==========================================================
-  // 🌹 EDIT HERE #4: loading status messages
-  // ข้อความเหล่านี้จะขึ้นสลับกันไปเรื่อยๆ ระหว่างที่แถบโหลดวิ่ง
-  // คำแปลของแต่ละบรรทัด (เรียงตามลำดับด้านล่าง):
-  //   'Growing digital petals ...'        = "กำลังปลูกกลีบดอกดิจิทัล ..."
-  //   'Watering with a little code ...'   = "รดน้ำด้วยโค้ดนิดหน่อย ..."
-  //   'Compiling affection.css ...'       = "กำลังคอมไพล์ความรัก.css ..."
-  //   'Almost blooming ...'               = "ใกล้จะบานแล้ว ..."
-  // จะแก้เป็นข้อความไทยตรงๆ เลยก็ได้ เช่น 'กำลังปลูกกลีบดอกดิจิทัล ...'
-  // ==========================================================
   const statuses = [
     'Growing digital petals ...',
     'Watering with a little code ...',
@@ -280,7 +247,6 @@
     if (progress >= 100) {
       progress = 100;
       clearInterval(loadInterval);
-      // คำแปล: "Ready to bloom 🌸" = "พร้อมที่จะบานแล้ว 🌸"
       statusText.textContent = 'Ready to bloom 🌸';
       bloomBtn.disabled = false;
       bloomBtn.classList.add('ready');
@@ -294,13 +260,6 @@
     barFill.style.width = progress + '%';
   }, 220);
 
-  // ==========================================================
-  // 🌹 EDIT HERE #5: flower size & petal layers.
-  // - count = petals in that ring
-  // - w / h = petal width/height in px (bigger = bigger flower)
-  // - c1/c2 = petal color gradient (top color / bottom color)
-  // Add a 4th object here for an extra outer ring of petals.
-  // ==========================================================
   const PETAL_LAYERS = [
     { count: 6, w: 62,  h: 98,  spread: -12, delayBase: 0.0, c1: '#ff5c7a', c2: '#c2123f' },
     { count: 7, w: 84,  h: 128, spread: -4,  delayBase: 0.5, c1: '#ef2f57', c2: '#9c0d33' },
@@ -336,7 +295,6 @@
       }
     });
 
-    // sparkles floating around the flower
     for (let s = 0; s < 12; s++) {
       const sp = document.createElement('div');
       sp.className = 'sparkle';
@@ -347,16 +305,15 @@
     }
   }
 
+  // แก้ไขจุดนี้: สั่งให้เล่นเพลงทันทีเมื่อกดปุ่ม TAP TO BLOOM บน iPhone (ห้ามมีคำสั่งคั่นก่อนหน้า)
   bloomBtn.addEventListener('click', () => {
     if (bloomBtn.disabled) return;
 
-    // ⚠️ สำคัญสำหรับ iPhone: ต้องเรียก bgMusic.play() เป็นคำสั่งแรกสุด
-    // ในฟังก์ชันนี้ ห้ามมี await/setTimeout คั่นก่อน ไม่งั้น Safari บน iOS
-    // จะนับว่าไม่ได้มาจากการ "แตะ" โดยตรง แล้วจะบล็อกเสียงทันที
     bgMusic.volume = 0.6;
     bgMusic.play().then(() => {
       soundBtn.textContent = '🔊';
-    }).catch(() => {
+    }).catch((err) => {
+      console.log("Audio play blocked:", err);
       soundBtn.textContent = '🔇';
     });
 
@@ -366,7 +323,6 @@
     createPetals();
     gardenScreen.classList.add('show');
 
-    // 🌹 EDIT HERE #6: delay (ms) before the final message fades in
     setTimeout(() => {
       message.classList.add('show');
     }, 3400);
